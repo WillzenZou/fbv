@@ -55,7 +55,7 @@ infodir:,mandir:,target:,\
 without-libjpeg,without-libpng,without-bmp,libs: \
 -n "$BASENAME" -- "$@")
 
-if [ $? != 0 ] ; then help ; exit 1 ; fi
+#if [ $? != 0 ] ; then help ; exit 1 ; fi
 #
 eval set -- "$TEMP"
 
