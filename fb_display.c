@@ -293,6 +293,14 @@ void blit2FB(int fh, unsigned char *fbbuff, unsigned char *alpha,
 	munmap(fb, scr_xs * scr_ys * cpp);
 }
 
+inline static unsigned char make1color(unsigned char r, unsigned char g, unsigned char b)
+{
+	return (
+	(((r >> 5) & 1) << 5) |
+	(((g >> 5) & 1) << 2) |
+	 ((b >> 6) & 1)	   );
+}
+
 inline static unsigned char make8color(unsigned char r, unsigned char g, unsigned char b)
 {
 	return (
@@ -329,9 +337,13 @@ void* convertRGB2FB(int fh, unsigned char *rgbbuff, unsigned long count, int bpp
 	{
 	case 1:
 		*cpp = 1;
-		c_fbbuff = (unsigned char *) malloc(count * sizeof(unsigned char));
-		for(i = 0; i < count; i++)
-		c_fbbuff[i] = make8color(rgbbuff[i*3], rgbbuff[i*3+1], rgbbuff[i*3+2]);
+		c_fbbuff = (unsigned char *) malloc(count * 3 * sizeof(unsigned char));
+	    	for(i = 0; i < (3 * count); i += 3) {
+			/* Big endian framebuffer. */
+			c_fbbuff[i] = rgbbuff[i+2];
+			c_fbbuff[i+1] = rgbbuff[i+1];
+			c_fbbuff[i+2] = rgbbuff[i];
+		}
 		fbbuff = (void *) c_fbbuff;
 		break;
 	case 8:
