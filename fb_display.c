@@ -337,8 +337,8 @@ void* convertRGB2FB(int fh, unsigned char *rgbbuff, unsigned long count, int bpp
 	{
 	case 1:
 		*cpp = 1;
-		c_fbbuff = (unsigned char *) malloc(count * sizeof(unsigned char));
-	    	for(i = 0; i < count; i += 3) {
+		c_fbbuff = (unsigned char *) malloc(count / 8 * sizeof(unsigned char));
+	    	for(i = 0; i < (count / 8); i += 3) {
 			/* Big endian framebuffer. */
 			c_fbbuff[i] = rgbbuff[i+2];
 			c_fbbuff[i+1] = rgbbuff[i+1];
