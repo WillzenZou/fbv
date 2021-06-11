@@ -42,7 +42,7 @@ void blit2FB(int fh, unsigned char *fbbuff, unsigned char *alpha,
 	unsigned int scr_xs, unsigned int scr_ys,
 	unsigned int xp, unsigned int yp,
 	unsigned int xoffs, unsigned int yoffs,
-	int cpp);
+	int cpp, int bpp1);
 
 int fb_display(unsigned char *rgbbuff, unsigned char * alpha,
                unsigned int x_size, unsigned int y_size,
@@ -89,9 +89,9 @@ int fb_display(unsigned char *rgbbuff, unsigned char * alpha,
 	/* blit buffer 2 fb */
 	fbbuff = (unsigned char*)convertRGB2FB(fh, rgbbuff, x_size * y_size, var.bits_per_pixel, &bp);
 #if 0
-	blit2FB(fh, fbbuff, alpha, x_size, y_size, x_stride, var.yres, x_pan, y_pan, x_offs, y_offs, bp);
+	blit2FB(fh, fbbuff, alpha, x_size, y_size, x_stride, var.yres, x_pan, y_pan, x_offs, y_offs, bp, var.bits_per_pixel);
 #else
-	blit2FB(fh, fbbuff, alpha, x_size, y_size, x_stride, var.yres_virtual, x_pan, y_pan, x_offs, y_offs + var.yoffset, bp);
+	blit2FB(fh, fbbuff, alpha, x_size, y_size, x_stride, var.yres_virtual, x_pan, y_pan, x_offs, y_offs + var.yoffset, bp, var.bits_per_pixel);
 #endif
 	free(fbbuff);
 
@@ -216,7 +216,7 @@ void blit2FB(int fh, unsigned char *fbbuff, unsigned char *alpha,
 	unsigned int scr_xs, unsigned int scr_ys,
 	unsigned int xp, unsigned int yp,
 	unsigned int xoffs, unsigned int yoffs,
-	int cpp)
+	int cpp, int bpp1)
 {
 	int i, xc, yc;
 	unsigned char *fb;
@@ -235,7 +235,7 @@ void blit2FB(int fh, unsigned char *fbbuff, unsigned char *alpha,
 		return;
 	}
 
-	if(cpp == 1)
+	if(bpp1 == 8 && cpp == 1)
 	{
 		get8map(fh, &map_back);
 		set332map(fh);
@@ -287,7 +287,7 @@ void blit2FB(int fh, unsigned char *fbbuff, unsigned char *alpha,
 		for(i = 0; i < yc; i++, fbptr += scr_xs * cpp, imptr += pic_xs * cpp)
 			memcpy(fbptr, imptr, xc * cpp);
 
-	if(cpp == 1)
+	if(bpp1 == 8 && cpp == 1)
 		set8map(fh, &map_back);
 
 	munmap(fb, scr_xs * scr_ys * cpp);
@@ -328,7 +328,7 @@ void* convertRGB2FB(int fh, unsigned char *rgbbuff, unsigned long count, int bpp
 	switch(bpp)
 	{
 	case 1:
-		*cpp = 0;
+		*cpp = 1;
 		c_fbbuff = (unsigned char *) malloc(count * sizeof(unsigned char));
 		for(i = 0; i < count; i++)
 		c_fbbuff[i] = make8color(rgbbuff[i*3], rgbbuff[i*3+1], rgbbuff[i*3+2]);
