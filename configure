@@ -75,7 +75,7 @@ while true ; do
 		--target=*) btarget="${1#*=}" ; shift ;;
 
 		--) shift ; break ;;
-		*) beak ;;
+		*) break ;;
 	esac
 done
 
