@@ -74,7 +74,8 @@ while true ; do
 		--without-bmp) bmp="disabled" ; shift ;;
 		--target=*) btarget="${1#*=}" ; shift ;;
 
-		--*) shift ;;
+		--) shift ; break ;;
+		*) beak ;;
 	esac
 done
 
