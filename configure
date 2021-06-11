@@ -61,9 +61,10 @@ eval set -- "$TEMP"
 
 # process options
 while true ; do
+	echo Debug: $1 $2
 	case "$1" in
 		-h|--help) help ; exit 0 ;;
-		--libs=*) libs="${1#*=}"; shift ;;
+		--libs) libs="$2"; shift 2 ;;
 		--prefix) prefix="$2" ; shift 2 ;;
 		--srcdir) srcdir="$2" ; shift 2 ;;
 		--bindir) bindir="$2" ; shift 2 ;;
