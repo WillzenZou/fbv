@@ -20,6 +20,7 @@ unset jpeg
 unset png
 unset bmp
 unset dfb
+unset btarget
 
 help(){
 cat << EOF >&2
@@ -50,7 +51,7 @@ EOF
 TEMP=$(getopt -o h \
 --long help,\
 prefix:,srcdir:,bindir:,\
-infodir:,mandir:,\
+infodir:,mandir:,target:,\
 without-libjpeg,without-libpng,without-bmp,libs: \
 -n "$BASENAME" -- "$@")
 
@@ -71,14 +72,19 @@ while true ; do
 		--without-libjpeg) jpeg="disabled" ; shift ;;
 		--without-libpng) png="disabled" ; shift ;;
 		--without-bmp) bmp="disabled" ; shift ;;
+		--target=) btarget="${1#*=}" ; shift ;;
 
 		--) shift ; break ;;
-		*) help ; exit 1 ;;
 	esac
 done
 
-[ -z "$CC" ] && CC=cc
-[ -z "$prefix" ] && prefix="/usr/local"
+[ -z "$CC" ] && CC=g++
+if [ -z "$btarget" ]; then
+	CC=arm-openwrt-linux-"$CC"
+else
+	CC="$btarget"-"$CC"
+fi
+[ -z "$prefix" ] && prefix="/usr"
 [ -z "$bindir" ] && bindir="${prefix}/bin"
 [ -z "$mandir" ] && mandir="${prefix}/man"
 [ -z "$infodir" ] && infodir="${prefix}/info"
