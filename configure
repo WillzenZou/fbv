@@ -72,9 +72,9 @@ while true ; do
 		--without-libjpeg) jpeg="disabled" ; shift ;;
 		--without-libpng) png="disabled" ; shift ;;
 		--without-bmp) bmp="disabled" ; shift ;;
-		--target=) btarget="${1#*=}" ; shift ;;
+		--target=*) btarget="${1#*=}" ; shift ;;
 
-		--) shift ; break ;;
+		--*) shift ;;
 	esac
 done
 
