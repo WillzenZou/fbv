@@ -328,7 +328,7 @@ void* convertRGB2FB(int fh, unsigned char *rgbbuff, unsigned long count, int bpp
 	switch(bpp)
 	{
 	case 1:
-		*cpp = 1;
+		*cpp = 0;
 		c_fbbuff = (unsigned char *) malloc(count * sizeof(unsigned char));
 		for(i = 0; i < count; i++)
 		c_fbbuff[i] = make8color(rgbbuff[i*3], rgbbuff[i*3+1], rgbbuff[i*3+2]);
