@@ -88,7 +88,7 @@ int fb_display(unsigned char *rgbbuff, unsigned char * alpha,
 
 	/* blit buffer 2 fb */
 	fbbuff = (unsigned char*)convertRGB2FB(fh, rgbbuff, x_size * y_size, var.bits_per_pixel, &bp);
-#if 0
+#if 1
 	blit2FB(fh, fbbuff, alpha, x_size, y_size, x_stride, var.yres, x_pan, y_pan, x_offs, y_offs, bp, var.bits_per_pixel);
 #else
 	blit2FB(fh, fbbuff, alpha, x_size, y_size, x_stride, var.yres_virtual, x_pan, y_pan, x_offs, y_offs + var.yoffset, bp, var.bits_per_pixel);
