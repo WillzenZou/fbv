@@ -337,11 +337,10 @@ void* convertRGB2FB(int fh, unsigned char *rgbbuff, unsigned long count, int bpp
 	{
 	case 1:
 		*cpp = 1;
-		c_fbbuff = (unsigned char *) malloc(count * sizeof(unsigned char));
-	    	for(i = 0; i < count; i += 3) {
-			c_fbbuff[i] = make1color(rgbbuff[i*3], rgbbuff[i*3+1], rgbbuff[i*3+2]);
-		}
-		fbbuff = (void *) c_fbbuff;
+		s_fbbuff = (unsigned short *) malloc(count * sizeof(unsigned short));
+		for(i = 0; i < count ; i++)
+		s_fbbuff[i] = make16color(rgbbuff[i*3], rgbbuff[i*3+1], rgbbuff[i*3+2]);
+		fbbuff = (void *) s_fbbuff;
 		break;
 	case 8:
 		*cpp = 1;
